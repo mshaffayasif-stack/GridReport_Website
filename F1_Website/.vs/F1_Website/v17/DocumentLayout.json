@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\DELL\\OneDrive\\Desktop\\F1_Website\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\DELL\\OneDrive\\Desktop\\F1_Website\\data\\season_26.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:data\\season_26.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\DELL\\OneDrive\\Desktop\\F1_Website\\update_data.py||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:update_data.py||{3B902123-F8A7-4915-9F01-361F908088D0}"
     }
@@ -19,12 +23,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "season_26.json",
+              "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\F1_Website\\data\\season_26.json",
+              "RelativeDocumentMoniker": "data\\season_26.json",
+              "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\F1_Website\\data\\season_26.json",
+              "RelativeToolTip": "data\\season_26.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-08-01T11:43:36.671Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "update_data.py",
               "DocumentMoniker": "C:\\Users\\DELL\\OneDrive\\Desktop\\F1_Website\\update_data.py",
               "RelativeDocumentMoniker": "update_data.py",
               "ToolTip": "C:\\Users\\DELL\\OneDrive\\Desktop\\F1_Website\\update_data.py",
               "RelativeToolTip": "update_data.py",
-              "ViewState": "AgIAAIcAAAAAAAAAAAAAAKAAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAwEcAAABXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-07-31T13:55:54.815Z",
               "EditorCaption": ""

@@ -8,7 +8,7 @@ CACHE_DIR = "fastf1_cache"
 OUT_DIR = "data"
 OUT_FILE = os.path.join(OUT_DIR, "season_26.json")
 
-os.makedirs(OUT_FILE, exist_ok=True)
+os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(CACHE_DIR, exist_ok=True)
 fastf1.Cache.enable_cache(CACHE_DIR)
 
@@ -28,7 +28,7 @@ def extract_data(year, round_num):
     laps = session.laps
 
     classification = []
-    for _, row in results.itterrows():
+    for _, row in results.iterrows():
         grid = int(row["GridPosition"]) if pd.notnull(row["GridPosition"]) and row["GridPosition"] > 0 else 0
         finish = int(row["Position"]) if pd.notnull(row["Position"]) and row["Position"] > 0 else 0
         points = float(row["Points"]) if pd.notnull(row["Points"]) else 0.0
@@ -43,6 +43,33 @@ def extract_data(year, round_num):
             "points": points,
             "status": str(row["Status"])
         })
+
+    has_sprint = False
+    for i in range(1, 6):
+        if str(session.event.get(f"Session{i}", "")).lower() == "sprint":
+            has_sprint = True
+            break
+            
+    if has_sprint:
+        print(f"  -> [SPRINT DETECTED] Fetching sprint points for Round {round_num}...")
+        try:
+            # Use 'Sprint' instead of 'S' to ensure FastF1 finds the right session
+            sprint_session = fastf1.get_session(year, round_num, "Sprint")
+            sprint_session.load(telemetry=False, weather=False)
+            
+            for _, s_row in sprint_session.results.iterrows():
+                s_driver = str(s_row["Abbreviation"])
+                s_points = float(s_row["Points"]) if pd.notnull(s_row["Points"]) else 0.0
+                
+                if s_points > 0:
+                    for entry in classification:
+                        if entry["driver"] == s_driver:
+                            entry["points"] += s_points
+                            # Print to terminal so we can prove it's working
+                            print(f"     + Added {s_points} Sprint points to {s_driver}")
+                            break
+        except Exception as e:
+            print(f"  [Error] Failed to load Sprint points for round {round_num}: {e}")
 
     stints = laps.groupby(["Driver", "Stint"])["Compound"].first().reset_index()
     tyre_strategies = {}
@@ -121,39 +148,39 @@ def calculate_standings(races):
         row["position"] = index
 
     return{
-        "drivers": drivers_standings,
+        "drivers": driver_standings,
         "constructors": constructor_standings
     }
 
-    def build_dataset(year):
-        schedule = get_schedule(year)
+def build_dataset(year):
+    schedule = get_schedule(year)
 
-        if schedule.empty:
-            print("No completed races for this season")
-            return
+    if schedule.empty:
+        print("No completed races for this season")
+        return
 
-        races_data = []
-        for _, event in schedule.itterrows():
-            round_num = int(event["RoundNumber"])
-            try:
-                race_payload = extract_data(year, round_num)
-                races_data.append(race_payload)
-            except Exception as err:
-                print(f"[Error] Failed to process Round{round_num}: {err}")
+    races_data = []
+    for _, event in schedule.iterrows():
+        round_num = int(event["RoundNumber"])
+        try:
+            race_payload = extract_data(year, round_num)
+            races_data.append(race_payload)
+        except Exception as err:
+            print(f"[Error] Failed to process Round{round_num}: {err}")
 
 
-        standings = calculate_standings(races_data)
+    standings = calculate_standings(races_data)
 
-        master_payload = {
-            "season": year,
-            "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            "total_races_completed": len(races_data),
-            "championship_standings": standings,
-            "races": races_data
-        }
+    master_payload = {
+        "season": year,
+        "updated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "total_races_completed": len(races_data),
+        "championship_standings": standings,
+        "races": races_data
+    }
 
-        with open(OUT_FILE, "w", encoding="utf-8") as f:
-            json.dump(master_payload, f, indent=2)
+    with open(OUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(master_payload, f, indent=2)
 
 
 if __name__ == "__main__":
