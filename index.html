@@ -1,0 +1,516 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GridReport | Live Telemetry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        f1: { red: '#e10600', dark: '#090a0f', card: '#12141d', border: '#222533', neon: '#ff2a2a' },
+                        team: {
+                            mercedes: '#27F4D2', redbull: '#3671C6', ferrari: '#E80020',
+                            mclaren: '#FF8000', aston: '#229971', alpine: '#FF87BC',
+                            williams: '#005AFF', racingbulls: '#6692FF', haas: '#B6BABD',
+                            audi: '#00EA5E', cadillac: '#D4AF37'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif']
+                    },
+                    animation: {
+                        'radar-spin': 'spin 4s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #090a0f;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* CRT Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        /* Neon Glow Text */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(225, 6, 0, 0.6), 0 0 20px rgba(225, 6, 0, 0.4);
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: linear-gradient(145deg, rgba(18, 20, 29, 0.8) 0%, rgba(18, 20, 29, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        /* Radar Sweep for the Map */
+        .radar-sweep {
+            background: conic-gradient(from 0deg, transparent 70%, rgba(225, 6, 0, 0.3) 100%);
+            border-radius: 50%;
+        }
+
+        /* Simulated Live Timing Flashes */
+        .flash-purple {
+            animation: flashPurple 1s ease-out;
+        }
+
+        .flash-green {
+            animation: flashGreen 1s ease-out;
+        }
+
+        @keyframes flashPurple {
+            0% {
+                background-color: rgba(168, 85, 247, 0.3);
+                box-shadow: inset 0 0 15px rgba(168, 85, 247, 0.5);
+            }
+
+            100% {
+                background-color: transparent;
+                box-shadow: inset 0 0 0 transparent;
+            }
+        }
+
+        @keyframes flashGreen {
+            0% {
+                background-color: rgba(16, 185, 129, 0.3);
+                box-shadow: inset 0 0 15px rgba(16, 185, 129, 0.5);
+            }
+
+            100% {
+                background-color: transparent;
+                box-shadow: inset 0 0 0 transparent;
+            }
+        }
+
+        /* Table Stagger Animation */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stagger-row {
+            opacity: 0;
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #090a0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #222533;
+            border-radius: 10px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #e10600;
+            }
+
+        .tyre {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 4px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 8px rgba(0,0,0,0.5) inset;
+        }
+
+        .tyre-SOFT {
+            background-color: #ff3333;
+            box-shadow: 0 0 5px rgba(255,51,51,0.5);
+        }
+
+        .tyre-MEDIUM {
+            background-color: #ffe600;
+            box-shadow: 0 0 5px rgba(255,230,0,0.5);
+        }
+
+        .tyre-HARD {
+            background-color: #ffffff;
+            box-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-f1-card via-f1-dark to-f1-dark">
+
+    <div class="scanlines"></div>
+
+    <header class="border-b border-f1-border/50 bg-f1-dark/60 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-display font-black tracking-wider text-white uppercase flex items-center gap-2">
+                    <span class="text-f1-red glow-text">GRID</span>REPORT
+                </h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 mr-4">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-emerald-500 text-[10px] font-display font-bold tracking-widest uppercase">Live Link</span>
+                </div>
+                <select id="race-select" class="bg-black/50 text-white border border-f1-border rounded px-4 py-1.5 text-sm font-display uppercase focus:outline-none focus:border-f1-red transition-colors backdrop-blur-md cursor-pointer"></select>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-6 relative">
+
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-f1-red/10 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="md:col-span-1 glass-card rounded-xl p-5 flex flex-col justify-center relative overflow-hidden group">
+                <div class="absolute -right-4 -bottom-4 text-f1-border/20 font-display text-8xl font-black group-hover:scale-110 transition-transform duration-700 pointer-events-none">R<span id="bg-round"></span></div>
+                <span id="race-round" class="text-f1-red text-xs font-bold uppercase tracking-wider mb-1 font-display">Round --</span>
+                <h2 id="race-name" class="text-2xl font-display font-black text-white leading-tight z-10">--</h2>
+                <p id="race-location" class="text-gray-400 text-sm mt-1 z-10">--</p>
+            </div>
+
+            <div class="glass-card border-l-2 border-l-team-ferrari rounded-xl p-4 flex flex-col justify-between hover:bg-white/[0.02] transition-colors relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-24 h-24 bg-team-ferrari/10 rounded-full blur-xl pointer-events-none"></div>
+                <span class="text-xs text-gray-500 uppercase font-bold tracking-widest z-10">Race Winner</span>
+                <div id="hl-winner" class="text-xl font-display font-bold text-white mt-1 z-10">--</div>
+            </div>
+            <div class="glass-card border-l-2 border-l-emerald-500 rounded-xl p-4 flex flex-col justify-between hover:bg-white/[0.02] transition-colors relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl pointer-events-none"></div>
+                <span class="text-xs text-gray-500 uppercase font-bold tracking-widest z-10">Biggest Mover</span>
+                <div id="hl-mover" class="text-xl font-display font-bold text-white mt-1 flex items-center gap-2 z-10">--</div>
+            </div>
+            <div class="glass-card border-l-2 border-l-team-williams rounded-xl p-4 flex flex-col justify-between hover:bg-white/[0.02] transition-colors relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-24 h-24 bg-rose-500/10 rounded-full blur-xl pointer-events-none"></div>
+                <span class="text-xs text-gray-500 uppercase font-bold tracking-widest z-10">Retirements</span>
+                <div id="hl-dnf" class="text-xl font-display font-bold text-white mt-1 z-10">--</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <section class="lg:col-span-2 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-display font-bold text-gray-300 uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-f1-red animate-pulse"></span> Timing Tower
+                    </h3>
+                    <input type="text" id="driver-search" placeholder="Filter driver..." class="bg-black/40 border border-f1-border rounded-full px-4 py-1 text-sm text-white font-display focus:outline-none focus:border-f1-red transition-colors placeholder-gray-600" />
+                </div>
+                <div class="glass-card rounded-xl overflow-x-auto">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-black/40 text-gray-400 uppercase text-[10px] font-display tracking-widest border-b border-f1-border/50">
+                            <tr>
+                                <th class="py-4 px-4 text-center">Pos</th>
+                                <th class="py-4 px-4">Driver</th>
+                                <th class="py-4 px-4">Team</th>
+                                <th class="py-4 px-4 text-center">Gain</th>
+                                <th class="py-4 px-4">Stints</th>
+                                <th class="py-4 px-4 text-right">Pts</th>
+                            </tr>
+                        </thead>
+                        <tbody id="classification-table" class="divide-y divide-f1-border/30 text-gray-300">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <aside class="space-y-6">
+
+                <div class="glass-card rounded-xl p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xs font-display font-bold text-gray-400 uppercase tracking-widest">Circuit Topology</h3>
+                        <span class="text-[10px] text-f1-red font-display animate-pulse">TRACKING ACTIVE</span>
+                    </div>
+                    <div class="aspect-square bg-black/60 rounded-lg border border-f1-border/50 relative overflow-hidden flex items-center justify-center p-6 group">
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.1)_1px,_transparent_1px)] bg-[size:24px_24px] opacity-30"></div>
+                        <div class="absolute inset-0 radar-sweep animate-radar-spin opacity-40"></div>
+                        <svg id="track-svg" class="w-full h-full drop-shadow-[0_0_12px_rgba(255,255,255,0.4)] z-10"></svg>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-4">
+                    <h3 class="text-xs font-display font-bold text-gray-400 uppercase tracking-widest mb-4">Telemetry H2H</h3>
+                    <div class="flex gap-2 mb-6">
+                        <select id="h2h-driver1" class="w-full bg-black/50 text-xs border border-f1-border rounded px-2 py-2 text-white font-display focus:border-f1-red outline-none"></select>
+                        <span class="text-f1-red text-xs font-black pt-2 font-display">VS</span>
+                        <select id="h2h-driver2" class="w-full bg-black/50 text-xs border border-f1-border rounded px-2 py-2 text-white font-display focus:border-f1-red outline-none"></select>
+                    </div>
+                    <div id="h2h-results" class="grid grid-cols-3 gap-y-4 text-center text-sm">
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+    </main>
+
+    <script>
+        let seasonData = null;
+        let currentRaceData = null;
+        let liveTimingInterval = null;
+
+        const teamColors = {
+            'Mercedes': 'border-l-team-mercedes', 'Red Bull Racing': 'border-l-team-redbull',
+            'Ferrari': 'border-l-team-ferrari', 'McLaren': 'border-l-team-mclaren',
+            'Aston Martin': 'border-l-team-aston', 'Alpine': 'border-l-team-alpine',
+            'Williams': 'border-l-team-williams', 'Racing Bulls': 'border-l-team-racingbulls',
+            'Haas F1 Team': 'border-l-team-haas', 'Audi': 'border-l-team-audi',
+            'Cadillac': 'border-l-team-cadillac'
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch('./data/season_26.json');
+                seasonData = await res.json();
+                initDashboard();
+            } catch (e) {
+                console.error("Error loading JSON", e);
+            }
+        });
+
+        function initDashboard() {
+            const select = document.getElementById('race-select');
+            seasonData.races.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.round;
+                opt.textContent = `Round ${r.round} - ${r.event_name}`;
+                select.appendChild(opt);
+            });
+
+            select.addEventListener('change', (e) => loadRace(parseInt(e.target.value)));
+            document.getElementById('driver-search').addEventListener('input', renderTable);
+            document.getElementById('h2h-driver1').addEventListener('change', renderH2H);
+            document.getElementById('h2h-driver2').addEventListener('change', renderH2H);
+
+            loadRace(seasonData.races[0].round);
+            startLiveTimingSimulation();
+        }
+
+        function loadRace(round) {
+            currentRaceData = seasonData.races.find(r => r.round === round);
+            if (!currentRaceData) return;
+
+            document.getElementById('bg-round').textContent = currentRaceData.round;
+            document.getElementById('race-round').textContent = `Round ${currentRaceData.round}`;
+            document.getElementById('race-name').textContent = currentRaceData.event_name;
+            document.getElementById('race-location').textContent = `${currentRaceData.location}, ${currentRaceData.country} • ${currentRaceData.date}`;
+
+            renderHighlights();
+            renderTable();
+            renderTrackMap();
+            populateH2HDropdowns();
+        }
+
+        function renderHighlights() {
+            const cls = currentRaceData.classification;
+            const winner = cls.find(c => c.finish === 1);
+
+            let maxGain = -99;
+            let biggestMover = null;
+            let dnfCount = 0;
+
+            cls.forEach(c => {
+                if (c.net_gain > maxGain) { maxGain = c.net_gain; biggestMover = c; }
+                if (c.status === 'Retired' || c.status === 'Did not start') dnfCount++;
+            });
+
+            document.getElementById('hl-winner').textContent = winner ? winner.driver : 'TBD';
+            document.getElementById('hl-mover').innerHTML = biggestMover ? `${biggestMover.driver} <span class="text-sm font-sans text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded ml-1">▲${maxGain}</span>` : '--';
+            document.getElementById('hl-dnf').textContent = dnfCount;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('classification-table');
+            const searchTerm = document.getElementById('driver-search').value.toLowerCase();
+            tbody.innerHTML = '';
+
+            const filtered = currentRaceData.classification.filter(c =>
+                c.driver.toLowerCase().includes(searchTerm) || c.team.toLowerCase().includes(searchTerm)
+            );
+
+            filtered.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.id = `driver-row-${item.driver}`;
+                tr.className = `stagger-row hover:bg-white/[0.05] transition-colors border-l-[3px] ${teamColors[item.team] || 'border-l-gray-600'}`;
+                tr.style.animationDelay = `${index * 0.03}s`;
+
+                let gainBadge = '<span class="text-gray-500 font-display">-</span>';
+                if (item.net_gain > 0) gainBadge = `<span class="text-emerald-400 font-display text-xs drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]">▲ ${item.net_gain}</span>`;
+                if (item.net_gain < 0) gainBadge = `<span class="text-rose-500 font-display text-xs drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]">▼ ${Math.abs(item.net_gain)}</span>`;
+
+                // Safely extract tyre strategies without crashing if missing
+                const strategies = (currentRaceData.tyre_strategies && currentRaceData.tyre_strategies[item.driver])
+                    ? currentRaceData.tyre_strategies[item.driver]
+                    : [];
+
+                const tyreHtml = strategies.map(t => `<span class="tyre tyre-${t}" title="${t}"></span>`).join('');
+                const posDisplay = (item.status === 'Finished' || item.status.includes('Lapped')) ? item.finish : `<span class="text-[10px] text-f1-red font-display tracking-widest">${item.status.substring(0, 3).toUpperCase()}</span>`;
+
+                tr.innerHTML = `
+              <td class="py-3 px-4 text-center font-display font-bold text-white">${posDisplay}</td>
+              <td class="py-3 px-4 font-bold text-white">${item.driver} <span class="text-[10px] font-display font-normal text-gray-500 ml-1">#${item.driver_number}</span></td>
+              <td class="py-3 px-4 text-gray-400 text-xs">${item.team}</td>
+              <td class="py-3 px-4 text-center">${gainBadge}</td>
+              <td class="py-3 px-4 whitespace-nowrap">${tyreHtml}</td>
+              <td class="py-3 px-4 text-right font-display font-black text-white ${item.points > 0 ? 'drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]' : ''}">${item.points > 0 ? item.points : '-'}</td>
+            `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderTrackMap() {
+            const coords = currentRaceData.track_coordinates;
+            const svg = document.getElementById('track-svg');
+            if (!coords || !coords.x || !coords.y) { svg.innerHTML = ''; return; }
+
+            const minX = Math.min(...coords.x), maxX = Math.max(...coords.x);
+            const minY = Math.min(...coords.y), maxY = Math.max(...coords.y);
+            const width = maxX - minX, height = maxY - minY;
+            const padX = width * 0.15, padY = height * 0.15;
+
+            svg.setAttribute('viewBox', `${minX - padX} ${minY - padY} ${width + padX * 2} ${height + padY * 2}`);
+
+            // Structure points into array for Catmull-Rom smoothing
+            const pts = [];
+            for (let i = 0; i < coords.x.length; i++) {
+                pts.push({ x: coords.x[i], y: coords.y[i] });
+            }
+
+            // Generate smooth cubic bezier curves based on coordinate data
+            let pathStr = "";
+            const tension = 0.2; // Smoothness factor
+            for (let i = 0; i < pts.length; i++) {
+                let p0 = pts[(i - 1 + pts.length) % pts.length];
+                let p1 = pts[i];
+                let p2 = pts[(i + 1) % pts.length];
+                let p3 = pts[(i + 2) % pts.length];
+
+                let cp1x = p1.x + (p2.x - p0.x) * tension;
+                let cp1y = p1.y + (p2.y - p0.y) * tension;
+                let cp2x = p2.x - (p3.x - p1.x) * tension;
+                let cp2y = p2.y - (p3.y - p1.y) * tension;
+
+                if (i === 0) {
+                    pathStr += `M ${p1.x} ${p1.y}`;
+                }
+                pathStr += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
+            }
+
+            const defs = `
+            <defs>
+              <filter id="neon" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="${width * 0.015}" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+          `;
+
+            svg.innerHTML = `
+            ${defs}
+            <path d="${pathStr}" fill="none" stroke="#181a20" stroke-width="${width * 0.04}" stroke-linejoin="round" />
+            <path id="racing-line" d="${pathStr}" fill="none" stroke="#fff" stroke-width="${width * 0.012}" stroke-linejoin="round" class="drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]" />
+
+            <circle r="${width * 0.025}" fill="#00EA5E" filter="url(#neon)">
+              <animateMotion dur="10s" repeatCount="indefinite" path="${pathStr}" />
+            </circle>
+
+            <circle r="${width * 0.025}" fill="#e10600" filter="url(#neon)">
+              <animateMotion dur="10s" repeatCount="indefinite" path="${pathStr}" begin="-0.5s" />
+            </circle>
+          `;
+        }
+
+        function populateH2HDropdowns() {
+            const d1 = document.getElementById('h2h-driver1');
+            const d2 = document.getElementById('h2h-driver2');
+            d1.innerHTML = ''; d2.innerHTML = '';
+
+            const drivers = currentRaceData.classification.map(c => c.driver).sort();
+            drivers.forEach(d => {
+                d1.appendChild(new Option(d, d));
+                d2.appendChild(new Option(d, d));
+            });
+
+            if (drivers.length > 1) { d1.selectedIndex = 0; d2.selectedIndex = 1; }
+            renderH2H();
+        }
+
+        function renderH2H() {
+            const v1 = document.getElementById('h2h-driver1').value;
+            const v2 = document.getElementById('h2h-driver2').value;
+            const res = document.getElementById('h2h-results');
+            const c1 = currentRaceData.classification.find(c => c.driver === v1);
+            const c2 = currentRaceData.classification.find(c => c.driver === v2);
+
+            if (!c1 || !c2) return;
+
+            res.innerHTML = `
+            <div class="font-display font-bold text-white text-xl">${c1.grid}</div>
+            <div class="text-gray-500 text-[10px] py-1 font-display uppercase tracking-widest flex items-center justify-center">Grid</div>
+            <div class="font-display font-bold text-white text-xl">${c2.grid}</div>
+
+            <div class="font-display font-bold text-xl ${c1.finish < c2.finish ? 'text-f1-red drop-shadow-[0_0_8px_rgba(225,6,0,0.5)]' : 'text-white'}">${c1.finish}</div>
+            <div class="text-gray-500 text-[10px] py-1 font-display uppercase tracking-widest flex items-center justify-center">Finish</div>
+            <div class="font-display font-bold text-xl ${c2.finish < c1.finish ? 'text-f1-red drop-shadow-[0_0_8px_rgba(225,6,0,0.5)]' : 'text-white'}">${c2.finish}</div>
+
+            <div class="font-display font-bold text-white text-xl">${c1.points}</div>
+            <div class="text-gray-500 text-[10px] py-1 font-display uppercase tracking-widest flex items-center justify-center">Points</div>
+            <div class="font-display font-bold text-white text-xl">${c2.points}</div>
+          `;
+        }
+
+        function startLiveTimingSimulation() {
+            if (liveTimingInterval) clearInterval(liveTimingInterval);
+
+            liveTimingInterval = setInterval(() => {
+                if (!currentRaceData) return;
+                const drivers = currentRaceData.classification.map(c => c.driver);
+                const randomDriver = drivers[Math.floor(Math.random() * drivers.length)];
+                const row = document.getElementById(`driver-row-${randomDriver}`);
+
+                if (row) {
+                    row.classList.remove('flash-purple', 'flash-green');
+                    void row.offsetWidth;
+                    const isPurple = Math.random() > 0.7;
+                    row.classList.add(isPurple ? 'flash-purple' : 'flash-green');
+                }
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
