@@ -29,8 +29,8 @@
                     },
                     keyframes: {
                         drive: {
-                            '0%': { transform: 'translateX(-300px)' },
-                            '100%': { transform: 'translateX(calc(100vw + 300px))' }
+                            '0%': { transform: 'translateX(-300px) scaleX(-1)' },
+                            '100%': { transform: 'translateX(calc(100vw + 300px)) scaleX(-1)' }
                         }
                     }
                 }
@@ -193,7 +193,7 @@
 <body class="min-h-screen flex flex-col antialiased bg-gray-100 text-gray-900 dark:bg-f1-dark dark:text-e2e8f0 dark:bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] dark:from-f1-card dark:via-f1-dark dark:to-f1-dark">
 
     <div id="intro-loader" class="fixed inset-0 z-[100] bg-white dark:bg-f1-dark flex items-center transition-opacity duration-700 pointer-events-none">
-        <div class="absolute left-0 text-[10rem] drop-shadow-2xl animate-drive" style="transform: translateX(-300px);">🏎️</div>
+        <div class="absolute left-0 text-[10rem] drop-shadow-2xl animate-drive" style="transform: translateX(-300px) scaleX(-1);">🏎️</div>
     </div>
 
     <div class="scanlines"></div>
@@ -237,16 +237,16 @@
             <div class="relative rounded-2xl overflow-hidden glass-card p-8 md:p-16 flex flex-col items-center text-center">
 
                 <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                    <img src="https://images.unsplash.com/photo-1541348263662-e068f62f3e49?q=80&w=2000&auto=format&fit=crop" alt="Race Track Background" class="w-full h-full object-cover opacity-40 dark:opacity-20 blur-[6px] transform scale-105" />
+                    <img src="backgrund.jpeg" alt="Race Track Background" class="w-full h-full object-cover opacity-60 dark:opacity-40 blur-[6px] transform scale-105" onerror="this.src='https://images.unsplash.com/photo-1541348263662-e068f62f3e49?q=80&w=2000&auto=format&fit=crop'" />
                     <div class="absolute inset-0 bg-gradient-to-t from-gray-100 via-gray-100/70 to-transparent dark:from-f1-card dark:via-f1-card/80 dark:to-transparent"></div>
                 </div>
 
                 <div class="relative z-10 flex flex-col items-center">
-                    <span class="text-f1-red font-display text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full bg-f1-red/10 border border-f1-red/20">20th Season Intelligence Portal</span>
+                    <span id="dynamic-season-badge" class="text-f1-red font-display text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full bg-f1-red/10 border border-f1-red/20"></span>
                     <h2 class="text-4xl md:text-6xl font-display font-black text-gray-900 dark:text-white tracking-tight max-w-3xl uppercase leading-none mb-6">
                         Precision Telemetry & <span class="text-f1-red glow-text">Race Intel</span>
                     </h2>
-                    <p class="text-gray-700 dark:text-gray-300 max-w-xl text-sm md:text-base mb-8 font-medium drop-shadow-sm">
+                    <p class="text-gray-800 dark:text-gray-300 max-w-xl text-sm md:text-base mb-8 font-medium drop-shadow-sm">
                         Dive deep into historical grand prix data, circuit DRS zones, head-to-head performance metrics, and interactive driver trading cards.
                     </p>
                     <div class="flex flex-wrap justify-center gap-4">
@@ -261,20 +261,20 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-                <div class="glass-card rounded-xl p-6 border-l-4 border-l-f1-red bg-white/60 dark:bg-black/40">
+                <div onclick="switchTab('standings')" class="glass-card rounded-xl p-6 border-l-4 border-l-f1-red bg-white/60 dark:bg-black/40 cursor-pointer transition-transform hover:-translate-y-2 hover:shadow-2xl">
                     <h3 class="text-xs font-display font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Championship Status</h3>
                     <div class="text-2xl font-display font-black text-gray-900 dark:text-white">Season Active</div>
-                    <p class="text-xs text-gray-500 mt-1">Live telemetry syncs on race weekend.</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Live telemetry syncs on race weekend.</p>
                 </div>
-                <div class="glass-card rounded-xl p-6 border-l-4 border-l-emerald-500 bg-white/60 dark:bg-black/40">
+                <div onclick="switchTab('newsletter')" class="glass-card rounded-xl p-6 border-l-4 border-l-emerald-500 bg-white/60 dark:bg-black/40 cursor-pointer transition-transform hover:-translate-y-2 hover:shadow-2xl">
                     <h3 class="text-xs font-display font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Paddock Brief Newsletter</h3>
                     <div class="text-2xl font-display font-black text-gray-900 dark:text-white">Weekly Analysis</div>
-                    <p class="text-xs text-gray-500 mt-1">Directly to your inbox via Buttondown.</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Directly to your inbox via Buttondown.</p>
                 </div>
-                <div class="glass-card rounded-xl p-6 border-l-4 border-l-team-mclaren bg-white/60 dark:bg-black/40">
+                <div onclick="switchTab('hub')" class="glass-card rounded-xl p-6 border-l-4 border-l-team-mclaren bg-white/60 dark:bg-black/40 cursor-pointer transition-transform hover:-translate-y-2 hover:shadow-2xl">
                     <h3 class="text-xs font-display font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Interactive Cards</h3>
                     <div class="text-2xl font-display font-black text-gray-900 dark:text-white">Driver Profiles</div>
-                    <p class="text-xs text-gray-500 mt-1">Click any driver name to inspect gear & stats.</p>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Click any driver name to inspect gear & stats.</p>
                 </div>
             </div>
         </section>
@@ -322,7 +322,6 @@
         </section>
 
         <section id="tab-hub" class="tab-content space-y-6">
-
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-card p-4 rounded-xl">
                 <div>
                     <span id="race-round" class="text-f1-red text-[10px] font-bold uppercase tracking-wider font-display">Round --</span>
@@ -382,8 +381,7 @@
                             </div>
                         </div>
 
-                        <div id="circuit-info" class="mb-3 text-sm font-display font-black text-gray-900 dark:text-white flex items-center gap-2 uppercase tracking-wide">
-                        </div>
+                        <div id="circuit-info" class="mb-3 text-sm font-display font-black text-gray-900 dark:text-white flex items-center gap-2 uppercase tracking-wide"></div>
 
                         <div class="aspect-square bg-gray-100 dark:bg-black/60 rounded-lg border border-gray-300 dark:border-f1-border/50 relative overflow-hidden flex items-center justify-center p-6 group">
                             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.05)_1px,_transparent_1px)] dark:bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.1)_1px,_transparent_1px)] bg-[size:24px_24px] opacity-30"></div>
@@ -431,10 +429,8 @@
 
     <div id="driver-modal" class="fixed inset-0 z-50 bg-black/60 dark:bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
         <div id="modal-card-container" class="glass-card rounded-2xl max-w-md w-full border border-gray-300 dark:border-f1-border relative transform scale-95 transition-transform duration-300 shadow-2xl overflow-hidden">
-            <button onclick="closeDriverModal()" class="absolute top-4 right-4 text-gray-900 dark:text-white font-display text-sm font-bold bg-white/50 dark:bg-black/40 hover:bg-white/80 dark:hover:bg-black/60 w-8 h-8 rounded-full flex items-center justify-center transition-colors z-20 backdrop-blur-sm border border-gray-300 dark:border-white/10">✕</button>
-
-            <div id="modal-content">
-            </div>
+            <button onclick="closeDriverModal()" class="absolute top-4 right-4 text-white font-display text-sm font-bold bg-black/40 hover:bg-black/60 w-8 h-8 rounded-full flex items-center justify-center transition-colors z-20 backdrop-blur-sm border border-white/10">✕</button>
+            <div id="modal-content"></div>
         </div>
     </div>
 
@@ -443,6 +439,20 @@
     </footer>
 
     <script>
+        // --- Intro Loader Dismiss Logic ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('intro-loader');
+            if (loader) {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 700);
+                }, 3200);
+            }
+        });
+
+        // Set dynamic season year
+        document.getElementById('dynamic-season-badge').textContent = `${new Date().getFullYear()} Season Intelligence Portal`;
+
         let seasonData = null;
         let currentRaceData = null;
         let liveTimingInterval = null;
@@ -473,16 +483,6 @@
             'Belgium': '🇧🇪', 'Netherlands': '🇳🇱', 'Azerbaijan': '🇦🇿', 'Singapore': '🇸🇬',
             'Mexico': '🇲🇽', 'Brazil': '🇧🇷', 'Las Vegas': '🇺🇸', 'Qatar': '🇶🇦', 'Abu Dhabi': '🇦🇪'
         };
-
-        // --- Pre-loader Animation Logic ---
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('intro-loader');
-            // 0.5s delay + 2.5s duration = 3s total, giving it a little extra padding before fade
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 700);
-            }, 3200);
-        });
 
         // --- Theme Toggle Logic ---
         function toggleTheme() {
@@ -572,7 +572,6 @@
             document.getElementById('race-name').textContent = currentRaceData.event_name;
             document.getElementById('race-location').textContent = `${currentRaceData.location}, ${currentRaceData.country} • ${currentRaceData.date}`;
 
-            // Update circuit flags above track map
             const flag = countryFlags[currentRaceData.country] || '🏁';
             document.getElementById('circuit-info').innerHTML = `<span class="text-xl drop-shadow-sm">${flag}</span> ${currentRaceData.location}`;
 
@@ -624,16 +623,16 @@
                 const posDisplay = (item.status === 'Finished' || item.status.includes('Lapped')) ? item.finish : `<span class="text-[9px] text-f1-red font-display tracking-widest">${item.status.substring(0, 3).toUpperCase()}</span>`;
 
                 tr.innerHTML = `
-              <td class="py-2.5 px-3 text-center font-display font-bold text-gray-900 dark:text-white">${posDisplay}</td>
-              <td class="py-2.5 px-3 font-bold text-gray-900 dark:text-white cursor-pointer hover:text-f1-red transition-colors flex items-center gap-2" onclick="openDriverModal('${item.driver}', '${item.team}', '${item.driver_number}')">
-                 <span class="w-1.5 h-4 rounded-sm block" style="background-color: ${teamHexColors[item.team] || '#555'}"></span>
-                ${item.driver} <span class="text-[9px] font-display font-normal text-gray-500 ml-1">#${item.driver_number}</span>
-              </td>
-              <td class="py-2.5 px-3 text-gray-600 dark:text-gray-400 text-[11px]">${item.team}</td>
-              <td class="py-2.5 px-3 text-center">${gainBadge}</td>
-              <td class="py-2.5 px-3 whitespace-nowrap">${tyreHtml}</td>
-              <td class="py-2.5 px-3 text-right font-display font-black text-gray-900 dark:text-white">${item.points > 0 ? item.points : '-'}</td>
-            `;
+                  <td class="py-2.5 px-3 text-center font-display font-bold text-gray-900 dark:text-white">${posDisplay}</td>
+                  <td class="py-2.5 px-3 font-bold text-gray-900 dark:text-white cursor-pointer hover:text-f1-red transition-colors flex items-center gap-2" onclick="openDriverModal('${item.driver}', '${item.team}', '${item.driver_number}')">
+                     <span class="w-1.5 h-4 rounded-sm block" style="background-color: ${teamHexColors[item.team] || '#555'}"></span>
+                    ${item.driver} <span class="text-[9px] font-display font-normal text-gray-500 ml-1">#${item.driver_number}</span>
+                  </td>
+                  <td class="py-2.5 px-3 text-gray-600 dark:text-gray-400 text-[11px]">${item.team}</td>
+                  <td class="py-2.5 px-3 text-center">${gainBadge}</td>
+                  <td class="py-2.5 px-3 whitespace-nowrap">${tyreHtml}</td>
+                  <td class="py-2.5 px-3 text-right font-display font-black text-gray-900 dark:text-white">${item.points > 0 ? item.points : '-'}</td>
+                `;
                 tbody.appendChild(tr);
             });
         }
@@ -664,29 +663,29 @@
                 }
 
                 dTable.innerHTML += `
-              <tr class="hover:bg-black/5 dark:hover:bg-white/[0.03]">
-                <td class="py-2 px-2 font-display font-bold text-gray-900 dark:text-white">${idx + 1}</td>
-                <td class="py-2 px-2 font-bold text-gray-900 dark:text-white cursor-pointer hover:text-f1-red transition-colors flex items-center gap-2" onclick="openDriverModal('${name}', '${teamName}', '--')">
-                   <span class="w-1.5 h-4 rounded-sm block" style="background-color: ${teamHexColors[teamName] || '#555'}"></span>
-                  ${name}
-                </td>
-                <td class="py-2 px-2 text-gray-600 dark:text-gray-400">${teamName}</td>
-                <td class="py-2 px-2 text-right font-display font-black text-gray-900 dark:text-white">${stats.points}</td>
-              </tr>
-            `;
+                  <tr class="hover:bg-black/5 dark:hover:bg-white/[0.03]">
+                    <td class="py-2 px-2 font-display font-bold text-gray-900 dark:text-white">${idx + 1}</td>
+                    <td class="py-2 px-2 font-bold text-gray-900 dark:text-white cursor-pointer hover:text-f1-red transition-colors flex items-center gap-2" onclick="openDriverModal('${name}', '${teamName}', '--')">
+                       <span class="w-1.5 h-4 rounded-sm block" style="background-color: ${teamHexColors[teamName] || '#555'}"></span>
+                      ${name}
+                    </td>
+                    <td class="py-2 px-2 text-gray-600 dark:text-gray-400">${teamName}</td>
+                    <td class="py-2 px-2 text-right font-display font-black text-gray-900 dark:text-white">${stats.points}</td>
+                  </tr>
+                `;
             });
 
             sortedConstructors.forEach((c, idx) => {
                 cTable.innerHTML += `
-              <tr class="hover:bg-black/5 dark:hover:bg-white/[0.03]">
-                <td class="py-2 px-2 font-display font-bold text-gray-900 dark:text-white">${idx + 1}</td>
-                <td class="py-2 px-2 font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <span class="w-1.5 h-4 rounded-sm block" style="background-color: ${teamHexColors[c.name] || '#555'}"></span>
-                    ${c.name}
-                </td>
-                <td class="py-2 px-2 text-right font-display font-black text-gray-900 dark:text-white">${c.pts}</td>
-              </tr>
-            `;
+                  <tr class="hover:bg-black/5 dark:hover:bg-white/[0.03]">
+                    <td class="py-2 px-2 font-display font-bold text-gray-900 dark:text-white">${idx + 1}</td>
+                    <td class="py-2 px-2 font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <span class="w-1.5 h-4 rounded-sm block" style="background-color: ${teamHexColors[c.name] || '#555'}"></span>
+                        ${c.name}
+                    </td>
+                    <td class="py-2 px-2 text-right font-display font-black text-gray-900 dark:text-white">${c.pts}</td>
+                  </tr>
+                `;
             });
         }
 
@@ -742,33 +741,34 @@
                 return str;
             }
 
-            const fullPathStr = buildPathSubset(0, pts.length - 1);
+            // Stripping all new lines out to ensure animateMotion reads the path string perfectly
+            const fullPathStr = buildPathSubset(0, pts.length - 1).replace(/\s+/g, ' ').trim();
 
             let lineHtml = '';
             if (currentTrackMode === 'sectors') {
                 const third = Math.floor(pts.length / 3);
-                const s1Path = buildPathSubset(0, third);
-                const s2Path = buildPathSubset(third, third * 2);
-                const s3Path = buildPathSubset(third * 2, pts.length - 1) + buildPathSubset(pts.length - 1, pts.length);
+                const s1Path = buildPathSubset(0, third).replace(/\s+/g, ' ').trim();
+                const s2Path = buildPathSubset(third, third * 2).replace(/\s+/g, ' ').trim();
+                const s3Path = buildPathSubset(third * 2, pts.length - 1).replace(/\s+/g, ' ').trim() + " " + buildPathSubset(pts.length - 1, pts.length).replace(/\s+/g, ' ').trim();
 
                 lineHtml = `
-              <path d="${s1Path}" fill="none" stroke="#0891b2" stroke-width="${width * 0.012}" class="dark:stroke-[#22d3ee]" />
-              <path d="${s2Path}" fill="none" stroke="#ca8a04" stroke-width="${width * 0.012}" class="dark:stroke-[#facc15]" />
-              <path d="${s3Path}" fill="none" stroke="#c026d3" stroke-width="${width * 0.012}" class="dark:stroke-[#d946ef]" />
-            `;
+                  <path d="${s1Path}" fill="none" stroke="#0891b2" stroke-width="${width * 0.012}" class="dark:stroke-[#22d3ee]" />
+                  <path d="${s2Path}" fill="none" stroke="#ca8a04" stroke-width="${width * 0.012}" class="dark:stroke-[#facc15]" />
+                  <path d="${s3Path}" fill="none" stroke="#c026d3" stroke-width="${width * 0.012}" class="dark:stroke-[#d946ef]" />
+                `;
             } else {
                 lineHtml = `
-              <path d="${fullPathStr}" fill="none" stroke="#64748b" stroke-width="${width * 0.012}" class="dark:stroke-[#222533]" />
-              <path d="${fullPathStr}" fill="none" stroke="#00EA5E" stroke-width="${width * 0.018}" stroke-dasharray="${width * 0.15} ${width * 0.4}" class="drop-shadow-[0_0_6px_rgba(0,234,94,0.8)]" />
-            `;
+                  <path d="${fullPathStr}" fill="none" stroke="#64748b" stroke-width="${width * 0.012}" class="dark:stroke-[#222533]" />
+                  <path d="${fullPathStr}" fill="none" stroke="#00EA5E" stroke-width="${width * 0.018}" stroke-dasharray="${width * 0.15} ${width * 0.4}" class="drop-shadow-[0_0_6px_rgba(0,234,94,0.8)]" />
+                `;
             }
 
             svg.innerHTML = `
-            <path d="${fullPathStr}" fill="none" stroke="#e2e8f0" class="dark:stroke-[#181a20]" stroke-width="${width * 0.04}" stroke-linejoin="round" />
-            ${lineHtml}
-            <circle r="${width * 0.025}" fill="#00EA5E"><animateMotion dur="10s" repeatCount="indefinite" path="${fullPathStr}" /></circle>
-            <circle r="${width * 0.025}" fill="#e10600"><animateMotion dur="10s" repeatCount="indefinite" path="${fullPathStr}" begin="-0.5s" /></circle>
-          `;
+                <path d="${fullPathStr}" fill="none" stroke="#e2e8f0" class="dark:stroke-[#181a20]" stroke-width="${width * 0.04}" stroke-linejoin="round" />
+                ${lineHtml}
+                <circle cx="0" cy="0" r="${width * 0.025}" fill="#00EA5E"><animateMotion dur="10s" repeatCount="indefinite" path="${fullPathStr}" /></circle>
+                <circle cx="0" cy="0" r="${width * 0.025}" fill="#e10600"><animateMotion dur="10s" repeatCount="indefinite" path="${fullPathStr}" begin="-0.5s" /></circle>
+              `;
         }
 
         function populateH2HDropdowns() {
@@ -796,18 +796,18 @@
             if (!c1 || !c2) return;
 
             res.innerHTML = `
-            <div class="font-display font-bold text-gray-900 dark:text-white text-base">${c1.grid}</div>
-            <div class="text-gray-500 text-[10px] py-1 font-display uppercase tracking-widest flex items-center justify-center">Grid</div>
-            <div class="font-display font-bold text-gray-900 dark:text-white text-base">${c2.grid}</div>
+                <div class="font-display font-bold text-gray-900 dark:text-white text-base">${c1.grid}</div>
+                <div class="text-gray-500 text-[10px] py-1 font-display uppercase tracking-widest flex items-center justify-center">Grid</div>
+                <div class="font-display font-bold text-gray-900 dark:text-white text-base">${c2.grid}</div>
 
-            <div class="font-display font-bold text-base ${c1.finish < c2.finish ? 'text-f1-red' : 'text-gray-900 dark:text-white'}">${c1.finish}</div>
-            <div class="text-gray-500 text-[10px] py-1 font-display uppercase tracking-widest flex items-center justify-center">Finish</div>
-            <div class="font-display font-bold text-base ${c2.finish < c1.finish ? 'text-f1-red' : 'text-gray-900 dark:text-white'}">${c2.finish}</div>
+                <div class="font-display font-bold text-base ${c1.finish < c2.finish ? 'text-f1-red' : 'text-gray-900 dark:text-white'}">${c1.finish}</div>
+                <div class="text-gray-500 text-[10px] py-1 font-display uppercase tracking-widest flex items-center justify-center">Finish</div>
+                <div class="font-display font-bold text-base ${c2.finish < c1.finish ? 'text-f1-red' : 'text-gray-900 dark:text-white'}">${c2.finish}</div>
 
-            <div class="font-display font-bold text-gray-900 dark:text-white text-base">${c1.points}</div>
-            <div class="text-gray-500 text-[10px] py-1 font-display uppercase tracking-widest flex items-center justify-center">Points</div>
-            <div class="font-display font-bold text-gray-900 dark:text-white text-base">${c2.points}</div>
-          `;
+                <div class="font-display font-bold text-gray-900 dark:text-white text-base">${c1.points}</div>
+                <div class="text-gray-500 text-[10px] py-1 font-display uppercase tracking-widest flex items-center justify-center">Points</div>
+                <div class="font-display font-bold text-gray-900 dark:text-white text-base">${c2.points}</div>
+              `;
         }
 
         function openDriverModal(name, team, number) {
@@ -826,42 +826,43 @@
 
             const stats = driverStats[name] || { wins: 0, podiums: 0, rating: 75 };
 
+            // Dynamic Avatar Image
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=150&font-size=0.33&bold=true`;
+
             content.innerHTML = `
-            <div class="h-32 relative overflow-hidden" style="background: linear-gradient(135deg, ${hex}88 0%, #12141d 100%);">
-                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.2),_transparent)]"></div>
-                 <div class="absolute -bottom-8 -right-4 text-9xl font-display font-black text-white/20 dark:text-white/10 pointer-events-none">${number}</div>
-                 <div class="absolute bottom-4 left-6 flex items-end gap-4 z-10">
-                     <div class="w-16 h-16 rounded-xl flex items-center justify-center font-display font-black text-3xl bg-white dark:bg-[#090a0f] text-gray-900 dark:text-white border-2" style="border-color: ${hex}; box-shadow: 0 4px 15px ${hex}44;">
-                        ${number}
+                <div class="h-40 relative overflow-hidden" style="background: linear-gradient(135deg, ${hex} 0%, #111 150%);">
+                     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.2),_transparent)]"></div>
+                     <div class="absolute -bottom-8 -right-4 text-9xl font-display font-black text-white/20 dark:text-white/10 pointer-events-none">${number}</div>
+                     <div class="absolute bottom-4 left-6 flex items-end gap-4 z-10">
+                         <img src="${avatarUrl}" alt="${name}" class="w-20 h-20 rounded-full border-4 shadow-lg object-cover" style="border-color: rgba(255,255,255,0.2);">
+                         <div class="mb-1">
+                            <span class="text-[10px] font-display uppercase tracking-widest font-bold text-white opacity-90 drop-shadow-md">${team}</span>
+                            <h3 class="text-2xl font-display font-black text-white uppercase leading-none drop-shadow-md">${name}</h3>
+                         </div>
                      </div>
-                     <div class="mb-1">
-                        <span class="text-[10px] font-display uppercase tracking-widest font-bold" style="color: ${hex}; text-shadow: 0px 0px 2px rgba(0,0,0,0.8);">${team}</span>
-                        <h3 class="text-2xl font-display font-black text-white uppercase leading-none drop-shadow-md">${name}</h3>
-                     </div>
-                 </div>
-            </div>
-            <div class="p-6 space-y-6">
-                <div class="grid grid-cols-3 gap-3 text-center">
-                  <div class="bg-gray-100 dark:bg-black/50 py-3 rounded-lg border border-gray-300 dark:border-white/5 shadow-inner">
-                    <span class="text-[9px] text-gray-600 dark:text-gray-500 font-display uppercase block mb-1">Season Podiums</span>
-                    <div class="text-xl font-display font-bold text-gray-900 dark:text-white">${stats.podiums}</div>
-                  </div>
-                  <div class="bg-gray-100 dark:bg-black/50 py-3 rounded-lg border border-gray-300 dark:border-white/5 shadow-inner">
-                    <span class="text-[9px] text-gray-600 dark:text-gray-500 font-display uppercase block mb-1">Season Wins</span>
-                    <div class="text-xl font-display font-bold text-gray-900 dark:text-white">${stats.wins}</div>
-                  </div>
-                  <div class="bg-white dark:bg-[#090a0f] py-3 rounded-lg border border-gray-300" style="border-color: ${hex}44;">
-                    <span class="text-[9px] text-gray-600 dark:text-gray-400 font-display uppercase block mb-1">Grid Rating</span>
-                    <div class="text-xl font-display font-bold" style="color: ${hex}; text-shadow: 0 0 10px ${hex}66;">${stats.rating}</div>
-                  </div>
                 </div>
-                <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-lg border border-gray-200 dark:border-white/5">
-                    <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-sans">
-                      Official 20th Season telemetry profile for ${name}. Performance analytics indicate a grid rating of <strong class="text-gray-900 dark:text-white">${stats.rating}</strong> based on championship progression and sector efficiency metrics.
-                    </p>
+                <div class="p-6 space-y-6">
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                      <div class="bg-gray-100 dark:bg-black/50 py-3 rounded-lg border border-gray-300 dark:border-white/5 shadow-inner">
+                        <span class="text-[9px] text-gray-600 dark:text-gray-500 font-display uppercase block mb-1">Season Podiums</span>
+                        <div class="text-xl font-display font-bold text-gray-900 dark:text-white">${stats.podiums}</div>
+                      </div>
+                      <div class="bg-gray-100 dark:bg-black/50 py-3 rounded-lg border border-gray-300 dark:border-white/5 shadow-inner">
+                        <span class="text-[9px] text-gray-600 dark:text-gray-500 font-display uppercase block mb-1">Season Wins</span>
+                        <div class="text-xl font-display font-bold text-gray-900 dark:text-white">${stats.wins}</div>
+                      </div>
+                      <div class="bg-white dark:bg-[#090a0f] py-3 rounded-lg border border-gray-300" style="border-color: ${hex}44;">
+                        <span class="text-[9px] text-gray-600 dark:text-gray-400 font-display uppercase block mb-1">Grid Rating</span>
+                        <div class="text-xl font-display font-bold" style="color: ${hex}; text-shadow: 0 0 10px ${hex}66;">${stats.rating}</div>
+                      </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-white/5 p-4 rounded-lg border border-gray-200 dark:border-white/5">
+                        <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-sans">
+                          Official telemetry profile for ${name}. Performance analytics indicate a grid rating of <strong class="text-gray-900 dark:text-white">${stats.rating}</strong> based on championship progression and sector efficiency metrics.
+                        </p>
+                    </div>
                 </div>
-            </div>
-          `;
+              `;
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');
