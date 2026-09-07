@@ -1,34 +1,34 @@
 {
   "season": 2026,
-  "updated_at": "2026-08-26T07:18:05.219492+00:00",
-  "total_races_completed": 12,
+  "updated_at": "2026-09-07T11:27:55.793899+00:00",
+  "total_races_completed": 13,
   "championship_standings": {
     "drivers": [
       {
         "driver": "ANT",
         "team": "Mercedes",
-        "points": 242.0,
-        "wins": 6,
+        "points": 267.0,
+        "wins": 7,
         "position": 1
       },
       {
         "driver": "RUS",
         "team": "Mercedes",
-        "points": 183.0,
+        "points": 201.0,
         "wins": 2,
         "position": 2
       },
       {
         "driver": "HAM",
         "team": "Ferrari",
-        "points": 183.0,
+        "points": 191.0,
         "wins": 1,
         "position": 3
       },
       {
         "driver": "NOR",
         "team": "McLaren",
-        "points": 159.0,
+        "points": 171.0,
         "wins": 2,
         "position": 4
       },
@@ -42,49 +42,49 @@
       {
         "driver": "VER",
         "team": "Red Bull Racing",
-        "points": 112.0,
+        "points": 127.0,
         "wins": 0,
         "position": 6
       },
       {
         "driver": "PIA",
         "team": "McLaren",
-        "points": 104.0,
+        "points": 116.0,
         "wins": 0,
         "position": 7
       },
       {
         "driver": "HAD",
         "team": "Red Bull Racing",
-        "points": 68.0,
+        "points": 71.0,
         "wins": 0,
         "position": 8
       },
       {
         "driver": "LAW",
         "team": "Red Bull Racing",
-        "points": 49.0,
+        "points": 51.0,
         "wins": 0,
         "position": 9
       },
       {
         "driver": "GAS",
         "team": "Alpine",
-        "points": 44.0,
+        "points": 41.0,
         "wins": 0,
         "position": 10
       },
       {
         "driver": "LIN",
         "team": "Racing Bulls",
-        "points": 23.0,
+        "points": 29.0,
         "wins": 0,
         "position": 11
       },
       {
         "driver": "COL",
         "team": "Alpine",
-        "points": 19.0,
+        "points": 21.0,
         "wins": 0,
         "position": 12
       },
@@ -138,29 +138,29 @@
         "position": 19
       },
       {
+        "driver": "TSU",
+        "team": "Racing Bulls",
+        "points": 1.0,
+        "wins": 0,
+        "position": 20
+      },
+      {
         "driver": "PER",
         "team": "Cadillac",
         "points": 0.0,
         "wins": 0,
-        "position": 20
+        "position": 21
       },
       {
         "driver": "STR",
         "team": "Aston Martin",
         "points": 0.0,
         "wins": 0,
-        "position": 21
+        "position": 22
       },
       {
         "driver": "BOT",
         "team": "Cadillac",
-        "points": 0.0,
-        "wins": 0,
-        "position": 22
-      },
-      {
-        "driver": "TSU",
-        "team": "Racing Bulls",
         "points": 0.0,
         "wins": 0,
         "position": 23
@@ -169,37 +169,37 @@
     "constructors": [
       {
         "team": "Mercedes",
-        "points": 425.0,
-        "wins": 8,
+        "points": 468.0,
+        "wins": 9,
         "position": 1
       },
       {
         "team": "Ferrari",
-        "points": 338.0,
+        "points": 346.0,
         "wins": 2,
         "position": 2
       },
       {
         "team": "McLaren",
-        "points": 263.0,
+        "points": 287.0,
         "wins": 2,
         "position": 3
       },
       {
         "team": "Red Bull Racing",
-        "points": 186.0,
+        "points": 204.0,
         "wins": 0,
         "position": 4
       },
       {
         "team": "Racing Bulls",
-        "points": 66.0,
+        "points": 75.0,
         "wins": 0,
         "position": 5
       },
       {
         "team": "Alpine",
-        "points": 63.0,
+        "points": 62.0,
         "wins": 0,
         "position": 6
       },
@@ -2124,23 +2124,13 @@
           "status": "Finished"
         },
         {
-          "driver": "GAS",
-          "driver_number": "10",
-          "team": "Alpine",
-          "grid": 9,
-          "finish": 3,
-          "net_gain": 6,
-          "points": 15.0,
-          "status": "Finished"
-        },
-        {
           "driver": "HAD",
           "driver_number": "6",
           "team": "Red Bull Racing",
           "grid": 5,
-          "finish": 4,
-          "net_gain": 1,
-          "points": 12.0,
+          "finish": 3,
+          "net_gain": 2,
+          "points": 15.0,
           "status": "Finished"
         },
         {
@@ -2148,9 +2138,9 @@
           "driver_number": "81",
           "team": "McLaren",
           "grid": 7,
-          "finish": 5,
-          "net_gain": 2,
-          "points": 10.0,
+          "finish": 4,
+          "net_gain": 3,
+          "points": 12.0,
           "status": "Finished"
         },
         {
@@ -2158,9 +2148,9 @@
           "driver_number": "30",
           "team": "Racing Bulls",
           "grid": 10,
-          "finish": 6,
-          "net_gain": 4,
-          "points": 8.0,
+          "finish": 5,
+          "net_gain": 5,
+          "points": 10.0,
           "status": "Finished"
         },
         {
@@ -2168,8 +2158,18 @@
           "driver_number": "41",
           "team": "Racing Bulls",
           "grid": 15,
+          "finish": 6,
+          "net_gain": 9,
+          "points": 8.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "GAS",
+          "driver_number": "10",
+          "team": "Alpine",
+          "grid": 9,
           "finish": 7,
-          "net_gain": 8,
+          "net_gain": 2,
           "points": 6.0,
           "status": "Finished"
         },
@@ -4833,6 +4833,383 @@
         ],
         "VER": [
           "SOFT"
+        ]
+      }
+    },
+    {
+      "round": 13,
+      "event_name": "Italian Grand Prix",
+      "location": "Monza",
+      "country": "Italy",
+      "date": "2026-09-06",
+      "track_coordinates": {
+        "x": [
+          -1366,
+          -1095,
+          -821,
+          -545,
+          -193,
+          -399,
+          1646,
+          5265,
+          6874,
+          8202,
+          10461,
+          11036,
+          10132,
+          7087,
+          4262,
+          2544,
+          1696,
+          1448,
+          1103,
+          731,
+          -1245,
+          -1442
+        ],
+        "y": [
+          -584,
+          2541,
+          5721,
+          8191,
+          8868,
+          11008,
+          13967,
+          14462,
+          14696,
+          15308,
+          15773,
+          13530,
+          12085,
+          10252,
+          7806,
+          5912,
+          3378,
+          712,
+          -3049,
+          -5387,
+          -4776,
+          -1581
+        ]
+      },
+      "classification": [
+        {
+          "driver": "ANT",
+          "driver_number": "12",
+          "team": "Mercedes",
+          "grid": 19,
+          "finish": 1,
+          "net_gain": 18,
+          "points": 25.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "RUS",
+          "driver_number": "63",
+          "team": "Mercedes",
+          "grid": 2,
+          "finish": 2,
+          "net_gain": 0,
+          "points": 18.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "VER",
+          "driver_number": "3",
+          "team": "Red Bull Racing",
+          "grid": 5,
+          "finish": 3,
+          "net_gain": 2,
+          "points": 15.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "NOR",
+          "driver_number": "1",
+          "team": "McLaren",
+          "grid": 8,
+          "finish": 4,
+          "net_gain": 4,
+          "points": 12.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "PIA",
+          "driver_number": "81",
+          "team": "McLaren",
+          "grid": 6,
+          "finish": 5,
+          "net_gain": 1,
+          "points": 10.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "HAM",
+          "driver_number": "44",
+          "team": "Ferrari",
+          "grid": 4,
+          "finish": 6,
+          "net_gain": -2,
+          "points": 8.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "GAS",
+          "driver_number": "10",
+          "team": "Alpine",
+          "grid": 1,
+          "finish": 7,
+          "net_gain": -6,
+          "points": 6.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "LIN",
+          "driver_number": "41",
+          "team": "Racing Bulls",
+          "grid": 9,
+          "finish": 8,
+          "net_gain": 1,
+          "points": 4.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "COL",
+          "driver_number": "43",
+          "team": "Alpine",
+          "grid": 7,
+          "finish": 9,
+          "net_gain": -2,
+          "points": 2.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "TSU",
+          "driver_number": "22",
+          "team": "Racing Bulls",
+          "grid": 15,
+          "finish": 10,
+          "net_gain": 5,
+          "points": 1.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "BOR",
+          "driver_number": "5",
+          "team": "Audi",
+          "grid": 10,
+          "finish": 11,
+          "net_gain": -1,
+          "points": 0.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "HUL",
+          "driver_number": "27",
+          "team": "Audi",
+          "grid": 12,
+          "finish": 12,
+          "net_gain": 0,
+          "points": 0.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "SAI",
+          "driver_number": "55",
+          "team": "Williams",
+          "grid": 13,
+          "finish": 13,
+          "net_gain": 0,
+          "points": 0.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "LAW",
+          "driver_number": "30",
+          "team": "Red Bull Racing",
+          "grid": 22,
+          "finish": 14,
+          "net_gain": 8,
+          "points": 0.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "BEA",
+          "driver_number": "87",
+          "team": "Haas F1 Team",
+          "grid": 11,
+          "finish": 15,
+          "net_gain": -4,
+          "points": 0.0,
+          "status": "Finished"
+        },
+        {
+          "driver": "OCO",
+          "driver_number": "31",
+          "team": "Haas F1 Team",
+          "grid": 14,
+          "finish": 16,
+          "net_gain": -2,
+          "points": 0.0,
+          "status": "Lapped"
+        },
+        {
+          "driver": "ALB",
+          "driver_number": "23",
+          "team": "Williams",
+          "grid": 20,
+          "finish": 17,
+          "net_gain": 3,
+          "points": 0.0,
+          "status": "Lapped"
+        },
+        {
+          "driver": "PER",
+          "driver_number": "11",
+          "team": "Cadillac",
+          "grid": 17,
+          "finish": 18,
+          "net_gain": -1,
+          "points": 0.0,
+          "status": "Lapped"
+        },
+        {
+          "driver": "BOT",
+          "driver_number": "77",
+          "team": "Cadillac",
+          "grid": 16,
+          "finish": 19,
+          "net_gain": -3,
+          "points": 0.0,
+          "status": "Lapped"
+        },
+        {
+          "driver": "STR",
+          "driver_number": "18",
+          "team": "Aston Martin",
+          "grid": 18,
+          "finish": 20,
+          "net_gain": -2,
+          "points": 0.0,
+          "status": "Retired"
+        },
+        {
+          "driver": "ALO",
+          "driver_number": "14",
+          "team": "Aston Martin",
+          "grid": 21,
+          "finish": 21,
+          "net_gain": 0,
+          "points": 0.0,
+          "status": "Retired"
+        },
+        {
+          "driver": "LEC",
+          "driver_number": "16",
+          "team": "Ferrari",
+          "grid": 3,
+          "finish": 22,
+          "net_gain": -19,
+          "points": 0.0,
+          "status": "Retired"
+        }
+      ],
+      "tyre_strategies": {
+        "ALB": [
+          "MEDIUM",
+          "HARD",
+          "SOFT"
+        ],
+        "ALO": [
+          "HARD",
+          "SOFT"
+        ],
+        "ANT": [
+          "HARD",
+          "MEDIUM",
+          "MEDIUM"
+        ],
+        "BEA": [
+          "SOFT",
+          "HARD"
+        ],
+        "BOR": [
+          "SOFT",
+          "MEDIUM"
+        ],
+        "BOT": [
+          "SOFT",
+          "MEDIUM",
+          "SOFT"
+        ],
+        "COL": [
+          "MEDIUM",
+          "HARD"
+        ],
+        "GAS": [
+          "MEDIUM",
+          "HARD"
+        ],
+        "HAM": [
+          "SOFT",
+          "MEDIUM"
+        ],
+        "HUL": [
+          "MEDIUM",
+          "HARD",
+          "MEDIUM"
+        ],
+        "LAW": [
+          "MEDIUM",
+          "HARD",
+          "MEDIUM"
+        ],
+        "LEC": [
+          "SOFT"
+        ],
+        "LIN": [
+          "MEDIUM",
+          "HARD"
+        ],
+        "NOR": [
+          "MEDIUM",
+          "HARD"
+        ],
+        "OCO": [
+          "SOFT",
+          "HARD",
+          "MEDIUM"
+        ],
+        "PER": [
+          "SOFT",
+          "SOFT",
+          "MEDIUM"
+        ],
+        "PIA": [
+          "MEDIUM",
+          "HARD"
+        ],
+        "RUS": [
+          "MEDIUM",
+          "HARD"
+        ],
+        "SAI": [
+          "SOFT",
+          "HARD",
+          "MEDIUM"
+        ],
+        "STR": [
+          "SOFT",
+          "HARD"
+        ],
+        "TSU": [
+          "HARD",
+          "MEDIUM"
+        ],
+        "VER": [
+          "SOFT",
+          "MEDIUM",
+          "HARD"
         ]
       }
     }
